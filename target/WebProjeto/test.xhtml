@@ -35,7 +35,7 @@
             </p:panel>
 
             <p:panel header="Listagem de requisitos">
-                <p:dataTable var="item" value="#{helloBean.requisitoList}" rows="5" widgetVar="tblRequisito"
+                <p:dataTable var="item" value="#{helloBean.requisitoList}" rows="5" widgetVar="tblRequisito" id="tblRequisitoID"
                              paginator="true" emptyMessage="Nenhum registro encontrado"
                              paginatorAlwaysVisible="false" 
                              rowHover="true" 
@@ -59,17 +59,40 @@
                             </p:selectOneMenu>
                         </f:facet>
                         <p:graphicImage value="#{item.statusDesc}" height="24" width="24" />
+                        <h:outputLabel value="#{item.status}" style="color: white"/>
                     </p:column>
 
-                    <p:column headerText="Ação" style="width: 15%">
+                    <p:column headerText="Ação" style="width: 15%" exportable="false">
                         <p:commandButton update="@form" icon="fa fa-edit" title="View" >
                             <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
                         </p:commandButton>
-                        
-                         <p:commandButton update="@form" icon="fa fa-remove" title="View" >
+
+                        <p:commandButton update="@form" icon="fa fa-remove" title="View" >
                             <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
                         </p:commandButton>
                     </p:column>
+
+
+                    <f:facet name="footer">
+                        <p:toolbar id="toolbar" style="font-size:12px">
+                            <f:facet name="right">
+                                <h:commandLink>
+                                    <p:graphicImage value="img/excel.png" width="24" />
+                                    <p:dataExporter type="xls" target="tblRequisitoID"
+                                                    fileName="requisitos" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage value="img/pdf.png" width="24" />
+                                    <p:dataExporter type="pdf" target="tblRequisitoID"
+                                                    fileName="requisitos" />
+                                </h:commandLink>
+                            </f:facet>
+                            <f:facet name="left">
+                               
+                            </f:facet>
+                        </p:toolbar>
+                    </f:facet>
                 </p:dataTable>
             </p:panel>
 
