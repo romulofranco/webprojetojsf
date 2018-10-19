@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author romulo
  */
 public class Requisito implements Serializable {
-    
+
     public static final String REQ_STATUS_ALTO_RISCO = "a";
     public static final String REQ_STATUS_MEDIO_RISCO = "m";
     public static final String REQ_STATUS_BAIXO_RISCO = "b";
@@ -52,7 +52,19 @@ public class Requisito implements Serializable {
     }
 
     public String getStatus() {
-        return status;
+        if (this.status == null) { 
+            return "img/sem-risco.png";
+        }
+        
+        if (this.status.equalsIgnoreCase(REQ_STATUS_ALTO_RISCO)) {
+            return "img/alto-risco.png";
+        } else if (this.status.equalsIgnoreCase(REQ_STATUS_MEDIO_RISCO)) {
+            return "img/medio-risco.png";
+        } else if (this.status.equalsIgnoreCase(REQ_STATUS_BAIXO_RISCO)) {
+            return "img/baixo-risco.png";
+        }
+        
+        return "img/sem-risco.png";
     }
 
     public void setStatus(String status) {
