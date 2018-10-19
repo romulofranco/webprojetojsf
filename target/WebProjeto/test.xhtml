@@ -89,12 +89,24 @@
                                 </h:commandLink>
                             </f:facet>
                             <f:facet name="left">
-                               
+                                <p:commandButton icon="fa fa-plus-square"
+                                                 update="@form" ajax="true"
+                                                 oncomplete="PF('dlgRequisito').show();"
+                                                 actionListener="#{helloBean.novoRequisito}"
+                                                 title="Novo requisito" />
                             </f:facet>
                         </p:toolbar>
                     </f:facet>
                 </p:dataTable>
             </p:panel>
+            
+            <p:dialog header="Novo Requisito" position="center" modal="true" widgetVar="dlgRequisito">
+                
+                <f:facet name="footer">
+                    <p:commandButton value="OK"/>
+                    <p:commandButton value="Fechar" process="@this" onclick="PF('dlgRequisito').hide()"/>
+                </f:facet>
+            </p:dialog>
 
 
 

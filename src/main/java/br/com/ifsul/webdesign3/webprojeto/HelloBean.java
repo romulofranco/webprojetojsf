@@ -42,9 +42,13 @@ public class HelloBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void novoRequisito() {
+        this.requisitoAtual = new Requisito();
+    }
+
     public void salvarRequisito() {
         logger.info("Requisito: " + this.requisitoAtual);
-        
+
         if (requisitoAtual.getDescricao().isEmpty()) {
             message("Falha ao salvar requisito", "Salvar requisito", FacesMessage.SEVERITY_ERROR);
             return;
