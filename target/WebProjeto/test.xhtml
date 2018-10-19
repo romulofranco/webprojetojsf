@@ -36,31 +36,32 @@
 
             <p:panel header="Listagem de requisitos">
                 <p:dataTable var="item" value="#{helloBean.requisitoList}" rows="5" widgetVar="tblRequisito"
-                             paginator="true" 
+                             paginator="true" emptyMessage="Nenhum registro encontrado"
                              paginatorAlwaysVisible="false" 
                              rowHover="true" 
                              sortBy="#{item.id}" sortOrder="ascending">
-                    <p:column headerText="ID">
+                    <p:column headerText="ID" style="width: 5%">
                         <h:outputText value="#{item.id}"/>
                     </p:column>
 
-                    <p:column headerText="Descrição" filterBy="#{item.descricao}" filterMatchMode="contains">
+                    <p:column headerText="Descrição" style="width: 35%" filterBy="#{item.descricao}" filterMatchMode="contains">
                         <h:outputText value="#{item.descricao}"/>
                     </p:column>
 
-                    <p:column headerText="Status" filterBy="#{item.status}">
+                    <p:column headerText="Status" filterBy="#{item.status}" style="width: 10%" filterStyle="width:5px" >
                         <f:facet name="filter">
-                            <p:selectOneButton onchange="PF('tblRequisito').filter()">                                
+                            <p:selectOneMenu onchange="PF('tblRequisito').filter()">    
+                                <f:selectItem itemLabel="Todos" itemValue=" " />
                                 <f:selectItem itemLabel="Alto" itemValue="a" />
                                 <f:selectItem itemLabel="Medio" itemValue="m" />
                                 <f:selectItem itemLabel="Baixo" itemValue="b" />
                                 <f:selectItem itemLabel="Sem" itemValue="s" />
-                            </p:selectOneButton>
+                            </p:selectOneMenu>
                         </f:facet>
-                        <p:graphicImage value="#{item.status}" height="24" width="24" />
+                        <p:graphicImage value="#{item.statusDesc}" height="24" width="24" />
                     </p:column>
 
-                    <p:column headerText="Ação">
+                    <p:column headerText="Ação" style="width: 15%">
                         <p:commandButton update="@form" icon="fa fa-edit" title="View" >
                             <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
                         </p:commandButton>

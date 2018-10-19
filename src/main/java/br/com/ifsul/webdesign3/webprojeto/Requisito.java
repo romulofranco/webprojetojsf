@@ -50,8 +50,12 @@ public class Requisito implements Serializable {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
+    
     public String getStatus() {
+        return this.status;
+    }
+
+    public String getStatusDesc() {
         if (this.status == null) { 
             return "img/sem-risco.png";
         }
