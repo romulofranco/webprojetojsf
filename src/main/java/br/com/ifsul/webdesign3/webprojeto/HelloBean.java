@@ -6,9 +6,14 @@
 package br.com.ifsul.webdesign3.webprojeto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -18,13 +23,35 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class HelloBean implements Serializable {
 
+    private static final Logger logger = Logger.getLogger(HelloBean.class);
     private String welcome;
-    private String firstName = "John";
-    private String lastName = "Doe";
+
+    private Requisito requisitoAtual;
+    private List<Requisito> requisitoList;
+    private List<Requisito> requisitoListFilter;
 
     @PostConstruct
     public void init() {
         this.welcome = "Olá tudo bem?";
+        this.requisitoAtual = new Requisito();
+        this.requisitoList = new ArrayList<Requisito>();
+    }
+
+    public void message(String detail, String summary, FacesMessage.Severity severity) {
+        FacesMessage message = new FacesMessage(severity, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void salvarRequisito() {
+        logger.info("Requisito: " + this.requisitoAtual);
+        
+        if (requisitoAtual.getDescricao().isEmpty()) {
+            message("Falha ao salvar requisito", "Salvar requisito", FacesMessage.SEVERITY_ERROR);
+            return;
+        }
+        this.requisitoList.add(requisitoAtual);
+        this.requisitoAtual = new Requisito();
+        message("Requisito salvo com sucesso", "Salvar requisito", FacesMessage.SEVERITY_INFO);
     }
 
     public String getWelcome() {
@@ -35,24 +62,28 @@ public class HelloBean implements Serializable {
         this.welcome = welcome;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Requisito getRequisitoAtual() {
+        return requisitoAtual;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setRequisitoAtual(Requisito requisitoAtual) {
+        this.requisitoAtual = requisitoAtual;
     }
 
-    public String getLastName() {
-        return lastName;
+    public List<Requisito> getRequisitoList() {
+        return requisitoList;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRequisitoList(List<Requisito> requisitoList) {
+        this.requisitoList = requisitoList;
     }
 
-    public String showGreeting() {
-        return "Hello " + firstName + " " + lastName + "!";
+    public List<Requisito> getRequisitoListFilter() {
+        return requisitoListFilter;
+    }
+
+    public void setRequisitoListFilter(List<Requisito> requisitoListFilter) {
+        this.requisitoListFilter = requisitoListFilter;
     }
 
 }

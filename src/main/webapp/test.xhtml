@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
@@ -11,25 +12,67 @@
     <h:body>
         <h:form>
 
-            <p:panel header="PrimeFaces Hello World Example">
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+
+            <p:panel header="Cadastrar Requisito">
                 <h:panelGrid columns="2" cellpadding="4">
-                    <h:outputText value="First Name: " />
-                    <p:inputText value="#{helloBean.firstName}" />
+                    <h:outputText value="ID: " />
+                    <p:inputText value="#{helloBean.requisitoAtual.id}" />
 
-                    <h:outputText value="Last Name: " />
-                    <p:inputText value="#{helloBean.lastName}" />
+                    <h:outputText value="Descrição: " />
+                    <p:inputText value="#{helloBean.requisitoAtual.descricao}" />
 
-                    <p:commandButton value="Submit" update="greeting"
-                                     oncomplete="PF('greetingDialog').show()" />
+                    <h:outputText value="Status: " />
+                    <p:selectOneButton value="#{helloBean.requisitoAtual.status}">
+                        <f:selectItem itemLabel="Alto risco" itemValue="a" />
+                        <f:selectItem itemLabel="Medio risco" itemValue="m" />
+                        <f:selectItem itemLabel="Baixo risco" itemValue="b" />
+                        <f:selectItem itemLabel="Sem risco" itemValue="s" />
+                    </p:selectOneButton>
+
+                    <p:commandButton value="Confirmar" update="@form" action="#{helloBean.salvarRequisito()}"/>
                 </h:panelGrid>
             </p:panel>
 
-            <p:dialog header="Greeting" widgetVar="greetingDialog"
-                      modal="true" resizable="false">
-                <h:panelGrid id="greeting" columns="1" cellpadding="4">
-                    <h:outputText value="#{helloBean.showGreeting()}" />
-                </h:panelGrid>
-            </p:dialog>
+            <p:panel header="Listagem de requisitos">
+                <p:dataTable var="item" value="#{helloBean.requisitoList}" rows="5" widgetVar="tblRequisito"
+                             paginator="true" 
+                             paginatorAlwaysVisible="false" 
+                             rowHover="true" 
+                             sortBy="#{item.id}" sortOrder="ascending">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Descrição" filterBy="#{item.descricao}" filterMatchMode="contains">
+                        <h:outputText value="#{item.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Status" filterBy="#{item.status}">
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('tblRequisito').filter()">                                
+                                <f:selectItem itemLabel="Alto" itemValue="a" />
+                                <f:selectItem itemLabel="Medio" itemValue="m" />
+                                <f:selectItem itemLabel="Baixo" itemValue="b" />
+                                <f:selectItem itemLabel="Sem" itemValue="s" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{item.status}"/>
+                    </p:column>
+
+                    <p:column headerText="Ação">
+                        <p:commandButton update="@form" icon="fa fa-edit" title="View" >
+                            <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
+                        </p:commandButton>
+                        
+                         <p:commandButton update="@form" icon="fa fa-remove" title="View" >
+                            <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+
 
         </h:form>
     </h:body>
