@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="PROJETO_JPA" transaction-type="RESOURCE_LOCAL">
+    <class>br.com.ifsul.fsi.web.model.entity.Requisito</class>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1/projeto_jpa"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.password" value="175artur"/>
+      <property name="javax.persistence.schema-generation.database.action" value="update"/>
+      <property name="jdbc.persistence.logging" value="true"/>
+      <property name="jdbc.persistence.logfile" value="JDBC.log"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="show_sql" value="true"/>
+      <property name="hibernate.default_schema" value="projeto_jpa"/>
+      <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+      <property name="eclipselink.allow-zero-id" value="true"/>
+      <property name="format_sql" value="true"/>
+      <property name="use_sql_comments" value="true"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.level.sql" value="ALL"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="current_session_context_class" value="thread"/>
+      <property name="hibernate.connection.shutdown" value="true"/>
+      <!--Performance hints-->
+      <property name="eclipselink.jdbc.cache-statements" value="true"/>
+      <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
+      <property name="eclipselink.jdbc.batch-writing.size" value="1000"/>
+      <property name="eclipselink.persistence-context.flush-mode" value="commit"/>
+      <property name="eclipselink.persistence-context.close-on-commit" value="false"/>
+      <property name="eclipselink.persistence-context.persist-on-commit" value="false"/>
+      <property name="eclipselink.query-results-cache" value="true"/>
+      <property name="javax.persistence.Cacheable" value="true"/>
+    </properties>
+  </persistence-unit>
+  <!--<persistence-unit name="PROJETO_JPA"
+                              transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>br.com.ifsul.webdesign3.webprojeto.Requisito</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:projeto_jpa;create=false" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+        </properties>
+    </persistence-unit>-->
+</persistence>

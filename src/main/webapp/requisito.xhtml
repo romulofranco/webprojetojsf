@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+        <title>PrimeFaces Hello World Example</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formRequisito">
+            
+            <p:panel header="Cadastrar requisito">
+                <h:panelGrid columns="2" cellpadding="4" id="pnlRequisito">
+                    <h:outputText value="ID: " />
+                    <p:inputText value="#{requisitoBean.requisitoAtual.id}" disabled="true" />
+
+                    <h:outputText value="Descrição: " />
+                    <p:inputText value="#{requisitoBean.requisitoAtual.descricao}" />
+
+                    <h:outputText value="Usuário: " />
+                    <p:inputText value="#{requisitoBean.requisitoAtual.usuario}" />
+
+                    <p:commandButton value="Submit" update="@form :formRequisito:tblRequisitos" action="#{requisitoBean.salvarRequisito()}"
+                                     />
+                </h:panelGrid>
+            </p:panel>
+
+            <p:dataTable var="item" value="#{requisitoBean.requisitoList}" 
+                         disabledSelection="true" 
+                         emptyMessage="Nenhum registro encontrado"  paginatorAlwaysVisible="false" paginatorPosition="bottom" 
+                         id="tblRequisitos" scrollable="false"   paginator="true" rows="5" 
+                         rowHover="true" sortBy="#{item.id}" sortOrder="ascending" filteredValue="#{requisitoBean.requisitoListFilter}">
+
+
+                <p:column headerText="ID" style="width:20px">
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+
+                <p:column headerText="Descrição" filterBy="#{item.descricao}">
+                    <h:outputText value="#{item.descricao}"/>
+                </p:column>
+
+                <p:column headerText="Usuario" filterBy="#{item.usuario}">
+                    <h:outputText value="#{item.usuario}"/>
+                </p:column>
+
+                <p:column style="width:42px;text-align: center"> 
+                    <p:commandButton update=":formRequisito:pnlRequisito" actionListener="#{requisitoBean.printRequisito}" icon="ui-icon-search" title="View" >
+                        <f:setPropertyActionListener value="#{item}"  target="#{requisitoBean.requisitoAtual}"  />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog header="Greeting" widgetVar="greetingDialog"
+                      modal="true" resizable="false">
+                <h:panelGrid id="greeting" columns="1" cellpadding="4">
+
+                </h:panelGrid>
+            </p:dialog>
+
+        </h:form>
+    </h:body>
+</html>
