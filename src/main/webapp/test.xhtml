@@ -6,109 +6,67 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
+
         <title>PrimeFaces Hello World Example</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     </h:head>
 
     <h:body>
-        <h:form>
-
-            <p:growl id="growl" showDetail="true" sticky="true" />  
-
-            <p:panel header="Cadastrar Requisito">
-                <h:panelGrid columns="2" cellpadding="4">
+        <h:form id="formRequisito">
+            
+            <p:panel header="Cadastrar requisito">
+                <h:panelGrid columns="2" cellpadding="4" id="pnlRequisito">
                     <h:outputText value="ID: " />
-                    <p:inputText value="#{helloBean.requisitoAtual.id}" />
+                    <p:inputText value="#{helloBean.requisitoAtual.id}" disabled="true" />
 
                     <h:outputText value="Descrição: " />
                     <p:inputText value="#{helloBean.requisitoAtual.descricao}" />
 
-                    <h:outputText value="Status: " />
-                    <p:selectOneButton value="#{helloBean.requisitoAtual.status}">
-                        <f:selectItem itemLabel="Alto risco" itemValue="a" />
-                        <f:selectItem itemLabel="Medio risco" itemValue="m" />
-                        <f:selectItem itemLabel="Baixo risco" itemValue="b" />
-                        <f:selectItem itemLabel="Sem risco" itemValue="s" />
-                    </p:selectOneButton>
+                    <h:outputText value="Usuário: " />
+                    <p:inputText value="#{helloBean.requisitoAtual.usuario}" />
 
-                    <p:commandButton value="Confirmar" update="@form" action="#{helloBean.salvarRequisito()}"/>
+                    <p:commandButton value="Submit" update="@form :formRequisito:tblRequisitos" action="#{helloBean.salvarRequisito()}"
+                                     />
                 </h:panelGrid>
             </p:panel>
 
-            <p:panel header="Listagem de requisitos">
-                <p:dataTable var="item" value="#{helloBean.requisitoList}" rows="5" widgetVar="tblRequisito" id="tblRequisitoID"
-                             paginator="true" emptyMessage="Nenhum registro encontrado"
-                             paginatorAlwaysVisible="false" 
-                             rowHover="true" 
-                             sortBy="#{item.id}" sortOrder="ascending">
-                    <p:column headerText="ID" style="width: 5%">
-                        <h:outputText value="#{item.id}"/>
-                    </p:column>
-
-                    <p:column headerText="Descrição" style="width: 35%" filterBy="#{item.descricao}" filterMatchMode="contains">
-                        <h:outputText value="#{item.descricao}"/>
-                    </p:column>
-
-                    <p:column headerText="Status" filterBy="#{item.status}" style="width: 10%" filterStyle="width:5px" >
-                        <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('tblRequisito').filter()">    
-                                <f:selectItem itemLabel="Todos" itemValue=" " />
-                                <f:selectItem itemLabel="Alto" itemValue="a" />
-                                <f:selectItem itemLabel="Medio" itemValue="m" />
-                                <f:selectItem itemLabel="Baixo" itemValue="b" />
-                                <f:selectItem itemLabel="Sem" itemValue="s" />
-                            </p:selectOneMenu>
-                        </f:facet>
-                        <p:graphicImage value="#{item.statusDesc}" height="24" width="24" />
-                        <h:outputLabel value="#{item.status}" style="color: white"/>
-                    </p:column>
-
-                    <p:column headerText="Ação" style="width: 15%" exportable="false">
-                        <p:commandButton update="@form" icon="fa fa-edit" title="View" >
-                            <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
-                        </p:commandButton>
-
-                        <p:commandButton update="@form" icon="fa fa-remove" title="View" >
-                            <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
-                        </p:commandButton>
-                    </p:column>
+            <p:dataTable var="item" value="#{helloBean.requisitoList}" 
+                         disabledSelection="true" 
+                         emptyMessage="Nenhum registro encontrado"  paginatorAlwaysVisible="false" paginatorPosition="bottom" 
+                         id="tblRequisitos" scrollable="false"   paginator="true" rows="5" 
+                         rowHover="true" sortBy="#{item.id}" sortOrder="ascending" filteredValue="#{helloBean.requisitoListFilter}">
 
 
-                    <f:facet name="footer">
-                        <p:toolbar id="toolbar" style="font-size:12px">
-                            <f:facet name="right">
-                                <h:commandLink>
-                                    <p:graphicImage value="img/excel.png" width="24" />
-                                    <p:dataExporter type="xls" target="tblRequisitoID"
-                                                    fileName="requisitos" />
-                                </h:commandLink>
+                <p:column headerText="ID" style="width:20px">
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
 
-                                <h:commandLink>
-                                    <p:graphicImage value="img/pdf.png" width="24" />
-                                    <p:dataExporter type="pdf" target="tblRequisitoID"
-                                                    fileName="requisitos" />
-                                </h:commandLink>
-                            </f:facet>
-                            <f:facet name="left">
-                                <p:commandButton icon="fa fa-plus-square"
-                                                 update="@form" ajax="true"
-                                                 oncomplete="PF('dlgRequisito').show();"
-                                                 actionListener="#{helloBean.novoRequisito}"
-                                                 title="Novo requisito" />
-                            </f:facet>
-                        </p:toolbar>
-                    </f:facet>
-                </p:dataTable>
-            </p:panel>
-            
-            <p:dialog header="Novo Requisito" position="center" modal="true" widgetVar="dlgRequisito">
-                
-                <f:facet name="footer">
-                    <p:commandButton value="OK"/>
-                    <p:commandButton value="Fechar" process="@this" onclick="PF('dlgRequisito').hide()"/>
-                </f:facet>
+                <p:column headerText="Descrição" filterBy="#{item.descricao}">
+                    <h:outputText value="#{item.descricao}"/>
+                </p:column>
+
+                <p:column headerText="Usuario" filterBy="#{item.usuario}">
+                    <h:outputText value="#{item.usuario}"/>
+                </p:column>
+
+                <p:column style="width:42px;text-align: center"> 
+                    <p:commandButton update=":formRequisito:pnlRequisito" actionListener="#{helloBean.printRequisito}" icon="ui-icon-search" title="View" >
+                        <f:setPropertyActionListener value="#{item}"  target="#{helloBean.requisitoAtual}"  />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog header="Greeting" widgetVar="greetingDialog"
+                      modal="true" resizable="false">
+                <h:panelGrid id="greeting" columns="1" cellpadding="4">
+
+                </h:panelGrid>
             </p:dialog>
-
-
 
         </h:form>
     </h:body>

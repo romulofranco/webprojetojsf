@@ -8,12 +8,11 @@
             </goals>
         </action>
         <action>
-            <actionName>CUSTOM-deploy</actionName>
-            <displayName>deploy</displayName>
+            <actionName>CUSTOM-clean install</actionName>
+            <displayName>clean install</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
-                <goal>jetty:run</goal>
             </goals>
         </action>
     </actions>

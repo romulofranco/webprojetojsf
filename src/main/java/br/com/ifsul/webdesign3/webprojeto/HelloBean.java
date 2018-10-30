@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -23,8 +22,7 @@ import org.apache.log4j.Logger;
 @SessionScoped
 public class HelloBean implements Serializable {
 
-    private static final Logger logger = Logger.getLogger(HelloBean.class);
-    private String welcome;
+    private final static Logger logger = Logger.getLogger(HelloBean.class);
 
     private Requisito requisitoAtual;
     private List<Requisito> requisitoList;
@@ -32,38 +30,24 @@ public class HelloBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.welcome = "Olá tudo bem?";
         this.requisitoAtual = new Requisito();
-        this.requisitoList = new ArrayList<Requisito>();
+        this.requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
     }
 
-    public void message(String detail, String summary, FacesMessage.Severity severity) {
-        FacesMessage message = new FacesMessage(severity, summary, detail);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public void novoRequisito() {
-        this.requisitoAtual = new Requisito();
+    public void printRequisito() {
+        logger.info("Requisito:" + this.requisitoAtual);
     }
 
     public void salvarRequisito() {
-        logger.info("Requisito: " + this.requisitoAtual);
-
-        if (requisitoAtual.getDescricao().isEmpty()) {
-            message("Falha ao salvar requisito", "Salvar requisito", FacesMessage.SEVERITY_ERROR);
-            return;
-        }
-        this.requisitoList.add(requisitoAtual);
-        this.requisitoAtual = new Requisito();
-        message("Requisito salvo com sucesso", "Salvar requisito", FacesMessage.SEVERITY_INFO);
+        requisitoAtual = RequisitoDAO.getInstance().save(requisitoAtual);
+        requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
+        requisitoAtual = new Requisito();
+        
     }
 
-    public String getWelcome() {
-        return welcome;
-    }
-
-    public void setWelcome(String welcome) {
-        this.welcome = welcome;
+    public void processaRequisito() {
+        String value = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("param");
+        System.out.println("ID Requisito " + value);
     }
 
     public Requisito getRequisitoAtual() {

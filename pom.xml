@@ -15,7 +15,7 @@
 
         <servlet.version>3.1.0</servlet.version>
         <jsf.version>2.2.14</jsf.version>
-        <primefaces.version>6.1</primefaces.version>
+        <primefaces.version>6.2</primefaces.version>
 
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>
@@ -82,11 +82,11 @@
             <version>9.4-1200-jdbc41</version>
         </dependency>
   
-        <!-- <dependency> -->
-        <!-- <groupId>org.apache.derby</groupId> -->
-        <!-- <artifactId>derby</artifactId> -->
-        <!-- <version>10.14.1.0</version> -->
-        <!-- </dependency> -->
+        <dependency> 
+            <groupId>org.apache.derby</groupId> 
+            <artifactId>derby</artifactId> 
+            <version>10.14.2.0</version> 
+        </dependency> 
 
         <dependency>
             <groupId>log4j</groupId> 
@@ -133,41 +133,6 @@
             <artifactId>json</artifactId>
             <version>20170516</version>
         </dependency>
-        
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.13</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.5.12</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itext-pdfa</artifactId>
-            <version>5.5.12</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itext-xtra</artifactId>
-            <version>5.5.12</version>
-        </dependency>
-
 
     </dependencies>
 
