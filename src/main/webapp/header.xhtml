@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+
+
+    </h:head>
+    <body>
+
+        <ui:composition>
+            <div class="ui-widget-header ui-datatable-scrollable-header" style="margin-left: -5px;margin-right: -10px;margin-top: -10px">
+                <h:panelGrid columns="2" style="float:left">
+                    <p:commandButton icon="fa fa-navicon" onclick="PF('sidebarMenu').show()" style="border: none"/>
+                    <h1 class="ui-widget"> Gerenciamento de Riscos Inteligente </h1>
+                </h:panelGrid>
+
+                <h:panelGrid columns="4" style="float:right;margin-top: 5px">
+                    <p:commandButton icon="fa fa-bell" onclick="PF('sidebarNotif').show()"/>
+                    <p:commandButton icon="fa fa-sign-in" onclick="PF('sidebarNotif').show()"/>                  
+                </h:panelGrid>
+            </div>
+
+            <p:sidebar widgetVar="sidebarMenu" baseZIndex="10000">
+                <h1 style="font-weight:normal">Menu</h1>
+
+                <p:menu style="background: #ffffff;border:none">                   
+                    <p:menuitem value="Requisitos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-disk" />
+                    <p:menuitem value="Usuários" actionListener="#{menuView.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>                   
+                    <p:menuitem value="Análise de Riscos" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                </p:menu>
+
+
+            </p:sidebar>
+
+            <p:sidebar position="right"  widgetVar="sidebarNotif" baseZIndex="10000">
+                <h1 style="font-weight:normal">Notificações</h1>
+                <p:tabView style="font-size:11px">
+                    <p:tab title="Lidas">
+                    </p:tab>
+                    <p:tab title="Não lidas">
+                    </p:tab>
+                    <p:tab title="Outras inf.">
+                    </p:tab>
+                </p:tabView>
+
+                <br/>
+                <p:commandButton value="OK" onclick="PF('sidebarNotif').hide()"/>
+            </p:sidebar>
+
+
+            <p:growl id="messages" showDetail="true" showSummary="true" sticky="true" />  
+            <br/>
+        </ui:composition>
+    </body>
+</html>
+
