@@ -15,7 +15,7 @@
 
         <servlet.version>3.1.0</servlet.version>
         <jsf.version>2.2.14</jsf.version>
-        <primefaces.version>6.1</primefaces.version>
+        <primefaces.version>6.2</primefaces.version>
 
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>

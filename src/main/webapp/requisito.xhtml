@@ -6,67 +6,167 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-
-        <title>PrimeFaces Hello World Example</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.8" />
-        <meta name="mobile-web-app-capable" content="yes"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+        <title>AI Risk</title>
     </h:head>
 
-    <h:body>
+    <h:body style="overflow:hidden">
         <h:form id="formRequisito">
-            
-            <p:panel header="Cadastrar requisito">
-                <h:panelGrid columns="2" cellpadding="4" id="pnlRequisito">
-                    <h:outputText value="ID: " />
-                    <p:inputText value="#{requisitoBean.requisitoAtual.id}" disabled="true" />
-
-                    <h:outputText value="Descrição: " />
-                    <p:inputText value="#{requisitoBean.requisitoAtual.descricao}" />
-
-                    <h:outputText value="Usuário: " />
-                    <p:inputText value="#{requisitoBean.requisitoAtual.usuario}" />
-
-                    <p:commandButton value="Submit" update="@form :formRequisito:tblRequisitos" action="#{requisitoBean.salvarRequisito()}"
-                                     />
+            <div class="ui-widget-header ui-datatable-scrollable-header" style="margin-left: -5px;margin-right: -10px;margin-top: -10px">
+                <h:panelGrid columns="2" style="float:left">
+                    <p:commandButton icon="fa fa-navicon" onclick="PF('sidebarMenu').show()" style="border: none"/>
+                    <h1 class="ui-widget"> Gerenciamento de Riscos Inteligente </h1>
                 </h:panelGrid>
+
+                <h:panelGrid columns="4" style="float:right;margin-top: 5px">
+                    <p:commandButton icon="fa fa-bell" onclick="PF('sidebarNotif').show()"/>
+                    <p:commandButton icon="fa fa-sign-in" onclick="PF('sidebarNotif').show()"/>                  
+                </h:panelGrid>
+            </div>
+
+            <p:sidebar widgetVar="sidebarMenu" baseZIndex="10000">
+                <h1 style="font-weight:normal">Menu</h1>
+
+                <p:menu style="background: #ffffff;border:none">                   
+                        <p:menuitem value="Requisitos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-disk" />
+                        <p:menuitem value="Usuários" actionListener="#{menuView.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>                   
+                        <p:menuitem value="Análise de Riscos" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                </p:menu>
+
+
+            </p:sidebar>
+
+            <p:sidebar position="right"  widgetVar="sidebarNotif" baseZIndex="10000">
+                <h1 style="font-weight:normal">Notificações</h1>
+                <p:tabView style="font-size:11px">
+                    <p:tab title="Lidas">
+                    </p:tab>
+                    <p:tab title="Não lidas">
+                    </p:tab>
+                    <p:tab title="Outras inf.">
+                    </p:tab>
+                </p:tabView>
+
+                <br/>
+                <p:commandButton value="OK" onclick="PF('sidebarNotif').hide()"/>
+            </p:sidebar>
+
+
+            <p:growl id="messages" showDetail="true" showSummary="true" sticky="true" />  
+            <br/>
+            <p:dialog header="Cadastro de Requisitos" 
+                      closable="true"
+                      id="dlgRequisitoID" 
+                      widgetVar="dlgRequisito" 
+                      visible="false" 
+                      position="center" 
+                      responsive="true" style="font-size: 12px">
+                <p:tabView id="tbvRequisito">
+                    <p:tab title="Geral">
+                        <h:panelGrid columns="2" cellpadding="4" id="gridRequisito">
+                            <h:outputText value="ID: " />
+                            <p:inputText value="#{requisitoBean.requisitoAtual.id}" readonly="true" 
+                                         converterMessage="Insira um valor numérico"  >
+                                <f:convertNumber/>
+                            </p:inputText>
+
+                            <h:outputText value="Descrição: " />
+                            <p:inputText value="#{requisitoBean.requisitoAtual.descricao}" 
+                                         required="true" 
+                                         requiredMessage="Descrição é obrigatório"/>
+
+                            <h:outputText value="Potencial Risco:" />
+                            <p:selectOneButton value="#{requisitoBean.requisitoAtual.potencialRisco}">
+                                <f:selectItem itemLabel="Alto" itemValue="a" />
+                                <f:selectItem itemLabel="Médio" itemValue="m" />
+                                <f:selectItem itemLabel="Baixo" itemValue="b" />
+                                <f:selectItem itemLabel="Sem risco" itemValue="s" />
+                            </p:selectOneButton>
+
+
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="Risco">
+
+                    </p:tab>
+
+                    <p:tab title="Usuario">
+
+                    </p:tab>
+                </p:tabView>
+                <f:facet name="footer">
+                    <div style="float:right">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Confirmar" update="@form" 
+                                             action="#{requisitoBean.salvarRequisito}" onsuccess="PF('dlgRequisito').hide()" />
+
+                            <p:commandButton value="Cancelar" 
+                                             process="@this" immediate="true" onclick="PF('dlgRequisito').hide()"/>
+                        </h:panelGrid>
+                    </div>
+                </f:facet>
+            </p:dialog>
+
+            <p:panel header="Listagem de requisitos">
+                <p:dataTable var="item" value="#{requisitoBean.requisitoList}" paginator="false"
+                             paginatorAlwaysVisible="false"  paginatorPosition="bottom"
+                             rowHover="true"  scrollHeight="650" scrollable="true" 
+                             sortOrder="ascending" sortBy="#{item.id}" style="font-size: 12px"
+                             >
+
+                    <p:column headerText="Potencial">
+                        <p:graphicImage value="#{item.potencialRiscoImg}" height="24" width="24"/>
+                    </p:column>
+
+                    <p:column headerText="ID" sortBy="#{item.id}">
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Data" sortBy="#{item.dataRequisito}">
+                        <h:outputText value="#{item.dataRequisito}"/>
+                    </p:column>
+
+                    <p:column headerText="Descrição" sortBy="#{item.descricao}" 
+                              filterBy="#{item.descricao}" >
+                        <h:outputText value="#{item.descricao}"/>
+                    </p:column>
+
+
+
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton update=":formRequisito:tbvRequisito" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgRequisito').show()">
+                            <f:setPropertyActionListener value="#{item}" target="#{requisitoBean.requisitoAtual}" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:toolbar id="toolbarRequisito" style="font-size:12px">
+                            <f:facet name="left">
+
+                                <p:commandButton value="Adicionar" icon="fa fa-new" 
+                                                 action="#{requisitoBean.novoRegistro()}" 
+                                                 update="@form" process="@this" 
+                                                 oncomplete="PF('dlgRequisito').show()"/>
+
+                            </f:facet>
+                            <f:facet name="right">
+                                <h:commandLink>
+                                    <p:graphicImage value="img/excel-icon.png" width="24" />
+                                    <p:dataExporter type="xls" target="frmcliente:tblClientes"
+                                                    fileName="clientes" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage value="img/pdf-icon.png" width="24" />
+                                    <p:dataExporter type="pdf" target="formRequisito:tblRequisito"
+                                                    fileName="clientes" />
+                                </h:commandLink>
+                            </f:facet>
+                        </p:toolbar>
+                    </f:facet>
+
+                </p:dataTable>
             </p:panel>
 
-            <p:dataTable var="item" value="#{requisitoBean.requisitoList}" 
-                         disabledSelection="true" 
-                         emptyMessage="Nenhum registro encontrado"  paginatorAlwaysVisible="false" paginatorPosition="bottom" 
-                         id="tblRequisitos" scrollable="false"   paginator="true" rows="5" 
-                         rowHover="true" sortBy="#{item.id}" sortOrder="ascending" filteredValue="#{requisitoBean.requisitoListFilter}">
-
-
-                <p:column headerText="ID" style="width:20px">
-                    <h:outputText value="#{item.id}"/>
-                </p:column>
-
-                <p:column headerText="Descrição" filterBy="#{item.descricao}">
-                    <h:outputText value="#{item.descricao}"/>
-                </p:column>
-
-                <p:column headerText="Usuario" filterBy="#{item.usuario}">
-                    <h:outputText value="#{item.usuario}"/>
-                </p:column>
-
-                <p:column style="width:42px;text-align: center"> 
-                    <p:commandButton update=":formRequisito:pnlRequisito" actionListener="#{requisitoBean.printRequisito}" icon="ui-icon-search" title="View" >
-                        <f:setPropertyActionListener value="#{item}"  target="#{requisitoBean.requisitoAtual}"  />
-                    </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
-
-            <p:dialog header="Greeting" widgetVar="greetingDialog"
-                      modal="true" resizable="false">
-                <h:panelGrid id="greeting" columns="1" cellpadding="4">
-
-                </h:panelGrid>
-            </p:dialog>
 
         </h:form>
     </h:body>

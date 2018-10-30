@@ -6,35 +6,46 @@
 package br.com.ifsul.fsi.web.model.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
- * @author admin
+ * @author romulo
  */
+
+
 @Entity
 @Table(name = "requisito")
 public class Requisito implements Serializable {
 
+    public static final String REQ_POTENCIAL_RISCO_ALTO = "a";
+    public static final String REQ_POTENCIAL_RISCO_MEDIO = "m";
+    public static final String REQ_POTENCIAL_RISCO_BAIXO = "b";
+    public static final String REQ_POTENCIAL_RISCO_SEM = "s";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
     private Integer id;
-    private String descricao;
+
     private String usuario;
+    private String descricao;
+    private String logChat;
+    private String potencialRisco;
+    private String nlu;
+    private String toneAnalyzer;
+    private String obs;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataRequisito;
 
     public Requisito() {
-    }
-
-    public Requisito(Integer id, String descricao, String usuario) {
-        this.id = id;
-        this.descricao = descricao;
-        this.usuario = usuario;
     }
 
     public Integer getId() {
@@ -45,14 +56,6 @@ public class Requisito implements Serializable {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
     public String getUsuario() {
         return usuario;
     }
@@ -61,9 +64,78 @@ public class Requisito implements Serializable {
         this.usuario = usuario;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getLogChat() {
+        return logChat;
+    }
+
+    public void setLogChat(String logChat) {
+        this.logChat = logChat;
+    }
+
+    public String getPotencialRisco() {
+        return potencialRisco;
+    }
+
+    public String getPotencialRiscoImg() {
+        if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_MEDIO)) {
+            return "img/medio-risco.png";
+        } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_ALTO)) {
+            return "img/alto-risco.png";
+        } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_BAIXO)) {
+            return "img/baixo-risco.png";
+        }
+
+        return "img/sem-risco.png";
+    }
+
+    public void setPotencialRisco(String potencialRisco) {
+        this.potencialRisco = potencialRisco;
+    }
+
+    public String getNlu() {
+        return nlu;
+    }
+
+    public void setNlu(String nlu) {
+        this.nlu = nlu;
+    }
+
+    public String getToneAnalyzer() {
+        return toneAnalyzer;
+    }
+
+    public void setToneAnalyzer(String toneAnalyzer) {
+        this.toneAnalyzer = toneAnalyzer;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
+
     @Override
     public String toString() {
-        return "Requisito{" + "id=" + id + ", descricao=" + descricao + ", usuario=" + usuario + '}';
+        return "Requisito{" + "id=" + id + ", usuario=" + usuario + ", descricao=" + descricao + ", logChat=" + logChat + ", potencialRisco=" + potencialRisco + ", nlu=" + nlu + ", toneAnalyzer=" + toneAnalyzer + ", obs=" + obs + ", data=" + dataRequisito + '}';
+    }
+
+   
+    public Date getDataRequisito() {
+        return dataRequisito;
+    }
+
+    public void setDataRequisito(Date data) {
+        this.dataRequisito = data;
     }
 
 }

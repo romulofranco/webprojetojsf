@@ -8,6 +8,8 @@ package br.com.ifsul.fsi.web.controller;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import br.com.ifsul.fsi.web.model.dao.RequisitoDAO;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -40,10 +42,16 @@ public class RequisitoBean implements Serializable {
     }
 
     public void salvarRequisito() {
+        this.printRequisito();
         requisitoAtual = RequisitoDAO.getInstance().save(requisitoAtual);
         requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
         requisitoAtual = new Requisito();
         
+    }
+    
+    public void novoRegistro() {
+        this.requisitoAtual = new Requisito();
+        this.requisitoAtual.setDataRequisito(new Date(System.currentTimeMillis()));
     }
 
     public void processaRequisito() {
