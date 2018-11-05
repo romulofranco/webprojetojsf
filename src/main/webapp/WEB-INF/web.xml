@@ -35,7 +35,14 @@
         <param-value>.xhtml</param-value>
     </context-param>
    
-
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>br.com.ifsul.fsi.web.controller.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/protegido/*</url-pattern>
+    </filter-mapping>
 
     <session-config>
         <session-timeout>120</session-timeout>

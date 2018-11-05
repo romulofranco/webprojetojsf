@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>WebProjeto - Login</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="shortcut icon" href="images/favicon.ico" />	
+
+    </h:head>
+
+    <h:body
+        style="background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);">
+
+
+
+        <h:form
+            onkeypress="if (event.keyCode == 13) {
+                        document.getElementById('frmLogin:cmdLogin').click();
+                    }"
+            id="frmLogin">
+
+            <p:dialog header="" visible="true" position="center" responsive="true"
+                      fitViewport="false" resizable="false" draggable="false" showHeader="false"
+                      style="border:none;background-image: radial-gradient(circle 298px at bottom left, #FFF 18%, white 27%, lightblue 100%); border-radius:18px;min-height:300px;min-width:280px;max-width:350px;max-height:480px;width:auto;height:auto"
+                      modal="true" closable="false" >
+
+                <p:growl id="messages" showDetail="true" 
+                         showSummary="true" life="3000" />
+                <p:focus for="userName" />
+
+                <h:panelGrid columns="1" style="font-family: arial;font-weight:600;">
+                    <p:spacer height="65px" />
+                    <h:outputText value="Usuário" />
+                    <p:inputText id="userName" size="30"
+                                 style="max-width:280px;border-radius:5px"
+                                 value="#{loginBean.username}" required="true" label="Usuário"
+                                 requiredMessage="Usuário é obrigatório" />
+
+                    <br />
+                    <h:outputText value="Senha" />
+
+                    <p:password id="password" 
+                                value="#{loginBean.userPassword}" required="true" size="30"
+                                style="max-width:280px;border-radius:5px" label="Senha"
+                                requiredMessage="Senha é obrigatória">
+                    </p:password>
+
+                    <br/>
+                    <f:facet name="footer">
+                        <div style="float: right">
+                            <p:commandButton action="#{loginBean.login}" update="@form" 
+                                             value="Confirmar" 
+                                             icon="fa fa-unlock-alt" 
+                                             style="background: transparent;border:none"
+                                             process="@form" 
+                                             type="submit" 
+                                             id="cmdLogin" ajax="true"/>                        
+                        </div>
+                    </f:facet>
+
+                </h:panelGrid>
+                <br/><br/>
+
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</html>

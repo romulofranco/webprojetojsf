@@ -23,7 +23,7 @@
 
                 <h:panelGrid columns="4" style="float:right;margin-top: 5px">
                     <p:commandButton icon="fa fa-bell" onclick="PF('sidebarNotif').show()"/>
-                    <p:commandButton icon="fa fa-sign-in" onclick="PF('sidebarNotif').show()"/>                  
+                    <p:commandButton icon="fa fa-sign-in" immediate="true" process="@this" action="#{loginBean.logout()}"/>                  
                 </h:panelGrid>
             </div>
 

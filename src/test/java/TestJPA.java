@@ -1,5 +1,6 @@
 
 import br.com.ifsul.fsi.web.model.entity.Requisito;        
+import br.com.ifsul.fsi.web.model.entity.Usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -53,6 +54,12 @@ public class TestJPA {
                         req.setUsuario("user 1");
 			em.persist(req);
 			
+                        Usuario user = new Usuario();
+                        user.setNome("Romulo Franco");
+                        user.setUsername("romulo");
+                        user.setSenha("1234");
+                        em.persist(user);
+                        
 			em.flush();
 			em.getTransaction().commit();
 
