@@ -19,8 +19,6 @@ import javax.persistence.TemporalType;
  *
  * @author romulo
  */
-
-
 @Entity
 @Table(name = "requisito")
 public class Requisito implements Serializable {
@@ -85,6 +83,10 @@ public class Requisito implements Serializable {
     }
 
     public String getPotencialRiscoImg() {
+        if (this.potencialRisco == null) {
+            return "img/sem-risco.png";
+        }
+        
         if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_MEDIO)) {
             return "img/medio-risco.png";
         } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_ALTO)) {
@@ -129,7 +131,6 @@ public class Requisito implements Serializable {
         return "Requisito{" + "id=" + id + ", usuario=" + usuario + ", descricao=" + descricao + ", logChat=" + logChat + ", potencialRisco=" + potencialRisco + ", nlu=" + nlu + ", toneAnalyzer=" + toneAnalyzer + ", obs=" + obs + ", data=" + dataRequisito + '}';
     }
 
-   
     public Date getDataRequisito() {
         return dataRequisito;
     }

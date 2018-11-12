@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>AI Risk</title>
+    </h:head>
+
+    <h:body style="overflow:hidden">
+        <h:form id="formUsuario">
+            <ui:include src="header.xhtml" />
+            <p:dialog header="Cadastro de Usuarios" 
+                      closable="true"
+                      id="dlgUsuarioID" 
+                      widgetVar="dlgUsuario" 
+                      visible="false" 
+                      position="center" 
+                      responsive="true" style="font-size: 12px">
+                <p:tabView id="tbvUsuario">
+                    <p:tab title="Geral">
+                        <h:panelGrid columns="2" cellpadding="4" id="gridUsuario">
+                            <h:outputText value="Username: " />
+                            <p:inputText value="#{usuarioBean.usuarioAtual.username}" />
+
+                            <h:outputText value="Senha: " />
+                            <p:inputText value="#{usuarioBean.usuarioAtual.senha}" />
+
+                            <h:outputText value="Nome: " />
+                            <p:inputText value="#{usuarioBean.usuarioAtual.nome}" 
+                                         required="true" 
+                                         requiredMessage="Nome é obrigatório"/>
+
+                            <h:outputText value="Tipo de usuário" />
+                            <p:selectOneButton value="#{usuarioBean.usuarioAtual.tipo}">
+                                <f:selectItem itemLabel="Analista" itemValue="a" />
+                                <f:selectItem itemLabel="Cliente" itemValue="c" />
+                            </p:selectOneButton>
+
+                            <h:outputText value="Ativo" />
+                            <p:selectOneButton value="#{usuarioBean.usuarioAtual.ativo}">
+                                <f:selectItem itemLabel="Ativo" itemValue="s" />
+                                <f:selectItem itemLabel="Inativo" itemValue="n" />
+                            </p:selectOneButton>
+
+
+
+                        </h:panelGrid>
+                    </p:tab>
+                </p:tabView>
+                <f:facet name="footer">
+                    <div style="float:right">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Confirmar" update="@form" 
+                                             action="#{usuarioBean.salvarUsuario}" onsuccess="PF('dlgUsuario').hide()" />
+
+                            <p:commandButton value="Cancelar" 
+                                             process="@this" immediate="true" onclick="PF('dlgUsuario').hide()"/>
+                        </h:panelGrid>
+                    </div>
+                </f:facet>
+            </p:dialog>
+
+            <p:panel header="Listagem de usuarios">
+                <f:facet name="header">
+                    <div style="float: left; ">
+                        <h:outputText value="Listagem de Usuarios" />
+                    </div>
+                    <div style="float: right" >
+                        <p:breadCrumb homeDisplay="icon" styleClass="ui-widget-header"
+                                      style="border:none;font-size:12px;background: transparent !important; padding: 0; margin-bottom: 2px; ">
+                            <p:menuitem value="Home" url="#" />
+                            <p:menuitem value="Usuarios" url="#" />                            
+                        </p:breadCrumb>
+                    </div>
+                </f:facet>
+                <p:dataTable var="item" value="#{usuarioBean.usuarioList}" paginator="false"
+                             paginatorAlwaysVisible="false"  paginatorPosition="bottom" widgetVar="usuarioTbl"
+                             rowHover="true"  scrollHeight="380" scrollable="true" id="usuarioTblID"
+                             sortOrder="ascending" sortBy="#{item.username}" style="font-size: 12px" >
+
+                    <p:column headerText="Ativo" style="width: 5%" filterBy="#{item.ativo}" filterStyle="font-size:9px">
+                        <p:graphicImage value="#{item.ativo}" height="24" width="24" />
+                        <f:facet name="filter" >
+                            <p:selectOneMenu onchange="PF('usuarioTbl').filter()"
+                                             style="width:auto">
+                                <f:selectItem itemLabel="" itemValue=""     />
+                                <f:selectItem itemLabel="Ativo" itemValue="s" />
+                                <f:selectItem itemLabel="Inativo" itemValue="n" />
+
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:column>
+
+                    <p:column headerText="Username" sortBy="#{item.username}"  style="width: 5%" priority="5">
+                        <h:outputText value="#{item.username}"/>
+                    </p:column>
+
+                    <p:column headerText="Nome" sortBy="#{item.nome}" style="width:10%">
+                        <h:outputText value="#{item.nome}"/>
+
+                    </p:column>
+
+                    <p:column headerText="Tipo" sortBy="#{item.tipo}" style="width: 25%"
+                              filterBy="#{item.tipo}" >
+                        <h:outputText value="#{item.tipo}"/>
+                    </p:column>
+
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton update=":formUsuario:tbvUsuario" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgUsuario').show()">
+                            <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.usuarioAtual}" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:toolbar id="toolbarUsuario" style="font-size:12px">
+                            <f:facet name="left">
+
+                                <p:commandButton  icon="fa fa-plus"
+                                                  action="#{usuarioBean.novoRegistro()}" 
+                                                  update="@form" process="@this" 
+                                                  oncomplete="PF('dlgUsuario').show()"/>
+
+                            </f:facet>
+                            <f:facet name="right">
+                                <h:commandLink>
+                                    <p:graphicImage value="img/excel-icon.png" width="24" />
+                                    <p:dataExporter type="xls" target="frmcliente:tblClientes"
+                                                    fileName="clientes" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage value="img/pdf-icon.png" width="24" />
+                                    <p:dataExporter type="pdf" target="formUsuario:tblUsuario"
+                                                    fileName="clientes" />
+                                </h:commandLink>
+                            </f:facet>
+                        </p:toolbar>
+                    </f:facet>
+
+                </p:dataTable>
+            </p:panel>
+
+
+        </h:form>
+    </h:body>
+</html>
