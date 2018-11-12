@@ -1,4 +1,5 @@
 
+import br.com.ifsul.fsi.web.model.dao.UsuarioDAO;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import br.com.ifsul.fsi.web.model.entity.Usuario;
 import javax.persistence.EntityManager;
@@ -63,11 +64,9 @@ public class TestJPA {
         em.persist(user);
         em.flush();
         em.getTransaction().commit();
+
+        UsuarioDAO.getInstance().delete(Usuario.class, user.getUsername());
         
-        em.getTransaction().begin();
-        em.detach(user);
-        em.remove(user);
-        em.getTransaction().commit();
 
     }
 

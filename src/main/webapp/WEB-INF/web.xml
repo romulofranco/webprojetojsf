@@ -35,7 +35,7 @@
         <param-value>.xhtml</param-value>
     </context-param>
    
-     <filter>
+    <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>br.com.ifsul.fsi.web.controller.filter.LoginFilter</filter-class>
     </filter>
@@ -58,7 +58,17 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/service/*</url-pattern>
+    </servlet-mapping>
 
     <display-name>MeuPrimeiroProjeto</display-name>
     <distributable />

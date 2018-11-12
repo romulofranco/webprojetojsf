@@ -1,7 +1,6 @@
 package br.com.ifsul.fsi.web.model.dao;
 
 import br.com.ifsul.fsi.web.model.DAOImpl;
-import br.com.ifsul.fsi.web.model.DAOImpl;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import java.io.Serializable;
 

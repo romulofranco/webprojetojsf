@@ -61,6 +61,21 @@ public abstract class DAOImpl<T, I extends Serializable> implements DAO<T, I> {
             this.conexao.getEntityManager().getTransaction().rollback();
         }
     }
+    
+    public void delete(Class<T> classe, String id) {
+        try {
+            EntityManager em = this.getEntityManager();
+            em.getTransaction().begin();
+            Query query = em.createQuery("delete from " + classe.getSimpleName() + " o where o.username = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
+            em.flush();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.conexao.getEntityManager().getTransaction().rollback();
+        }
+    }
 
     @Override
     public void remove(T entity) {
