@@ -8,10 +8,10 @@ package br.com.ifsul.fsi.web.controller;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import br.com.ifsul.fsi.web.model.dao.RequisitoDAO;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 @ManagedBean
 @SessionScoped
-public class RequisitoBean implements Serializable {
+public class RequisitoBean extends BaseBean implements Serializable {
 
     private final static Logger logger = Logger.getLogger(RequisitoBean.class);
 
@@ -31,10 +31,16 @@ public class RequisitoBean implements Serializable {
     private List<Requisito> requisitoList;
     private List<Requisito> requisitoListFilter;
 
+    private final String redirect = "/protegido/requisito.xhtml?faces-redirect=true";
+
     @PostConstruct
     public void init() {
         this.requisitoAtual = new Requisito();
         this.requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
+    }
+
+    public String menuAction() {
+        return redirect;
     }
 
     public void printRequisito() {
@@ -46,9 +52,9 @@ public class RequisitoBean implements Serializable {
         requisitoAtual = RequisitoDAO.getInstance().save(requisitoAtual);
         requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
         requisitoAtual = new Requisito();
-        
+        message("Salvar", "Requisito salvo com sucesso", FacesMessage.SEVERITY_INFO);
     }
-    
+
     public void novoRegistro() {
         this.requisitoAtual = new Requisito();
         this.requisitoAtual.setDataRequisito(new Date(System.currentTimeMillis()));

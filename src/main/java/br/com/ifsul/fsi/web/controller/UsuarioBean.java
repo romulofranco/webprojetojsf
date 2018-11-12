@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -23,13 +24,15 @@ import org.apache.log4j.Logger;
  */
 @ManagedBean
 @SessionScoped
-public class UsuarioBean implements Serializable {
+public class UsuarioBean extends BaseBean implements Serializable {
 
     private final static Logger logger = Logger.getLogger(UsuarioBean.class);
 
     private Usuario usuarioAtual;
     private List<Usuario> usuarioList;
     private List<Usuario> usuarioListFilter;
+
+    private final String redirect = "/protegido/usuario.xhtml?faces-redirect=true";
 
     @PostConstruct
     public void init() {
@@ -41,14 +44,18 @@ public class UsuarioBean implements Serializable {
         logger.info("Usuario:" + this.usuarioAtual);
     }
 
+    public String menuAction() {
+        return redirect;
+    }
+
     public void salvarUsuario() {
         this.printUsuario();
         usuarioAtual = UsuarioDAO.getInstance().save(usuarioAtual);
         usuarioList = UsuarioDAO.getInstance().getAll(Usuario.class);
         usuarioAtual = new Usuario();
-        
+        message("Salvar", "Usuário salvo com sucesso", FacesMessage.SEVERITY_INFO);
     }
-    
+
     public void novoRegistro() {
         this.usuarioAtual = new Usuario();
     }

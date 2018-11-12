@@ -23,7 +23,7 @@
 
                 <h:panelGrid columns="4" style="float:right;margin-top: 5px">
                     <p:commandButton icon="fa fa-bell" onclick="PF('sidebarNotif').show()"/>
-                    <p:commandButton icon="fa fa-sign-in" onclick="PF('sidebarNotif').show()"/>                  
+                    <p:commandButton icon="fa fa-sign-in" action="#{loginBean.logout()}" process="@this" immediate="true"/>                  
                 </h:panelGrid>
             </div>
 
@@ -31,8 +31,8 @@
                 <h1 style="font-weight:normal">Menu</h1>
 
                 <p:menu style="background: #ffffff;border:none">                   
-                    <p:menuitem value="Requisitos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-disk" />
-                    <p:menuitem value="Usuários" actionListener="#{menuView.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>                   
+                    <p:menuitem value="Requisitos" process="@this" immediate="true" action="#{requisitoBean.menuAction()}" update="messages" icon="ui-icon-disk" />
+                    <p:menuitem value="Usuários" process="@this" immediate="true" action="#{usuarioBean.menuAction()}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>                   
                     <p:menuitem value="Análise de Riscos" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
                 </p:menu>
 
@@ -57,6 +57,13 @@
 
             <p:growl id="messages" showDetail="true" showSummary="true" sticky="true" />  
             <br/>
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage value="ajax/loading1.gif" />
+            </p:dialog>
+
         </ui:composition>
     </body>
 </html>

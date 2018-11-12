@@ -55,13 +55,18 @@ public class TestJPA {
 
         Usuario user = new Usuario();
         user.setAtivo(Usuario.USUARIO_ATIVO);
-        user.setNome("Teste");
+        user.setNome("Teste1");
         user.setSenha("123");
         user.setTipo(Usuario.USUARIO_TIPO_ANALISTA);
         user.setUsername("teste");
 
         em.persist(user);
         em.flush();
+        em.getTransaction().commit();
+        
+        em.getTransaction().begin();
+        em.detach(user);
+        em.remove(user);
         em.getTransaction().commit();
 
     }

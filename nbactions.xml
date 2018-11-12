@@ -7,4 +7,13 @@
                 <goal>jetty:run</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-limpar</actionName>
+            <displayName>limpar</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
     </actions>

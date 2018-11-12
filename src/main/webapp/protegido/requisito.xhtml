@@ -84,7 +84,8 @@
                              rowHover="true"  scrollHeight="380" scrollable="true" id="requisitoTblID"
                              sortOrder="ascending" sortBy="#{item.id}" style="font-size: 12px" >
 
-                    <p:column headerText="Potencial" style="width: 5%" filterBy="#{item.potencialRisco}" filterStyle="font-size:9px">
+                    <p:column headerText="Potencial" style="width: 5%" filterBy="#{item.potencialRisco}" 
+                              filterStyle="font-size:9px" >
                         <p:graphicImage value="#{item.potencialRiscoImg}" height="24" width="24" />
                         <f:facet name="filter" >
                             <p:selectOneMenu onchange="PF('requisitoTbl').filter()"
@@ -102,7 +103,7 @@
                         <h:outputText value="#{item.id}"/>
                     </p:column>
 
-                    <p:column headerText="Data" sortBy="#{item.dataRequisito}" style="width:10%">
+                    <p:column headerText="Data" sortBy="#{item.dataRequisito}" style="width:5%">
                         <h:outputText value="#{item.dataRequisito}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                         </h:outputText>
@@ -118,7 +119,7 @@
                         <h:outputText value="#{item.usuario}"/>
                     </p:column>
 
-                    <p:column style="width:32px;text-align: center">
+                    <p:column style="width:32px;text-align: center" exportable="false">
                         <p:commandButton update=":formRequisito:tbvRequisito" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgRequisito').show()">
                             <f:setPropertyActionListener value="#{item}" target="#{requisitoBean.requisitoAtual}" />
                         </p:commandButton>
@@ -129,22 +130,26 @@
                             <f:facet name="left">
 
                                 <p:commandButton  icon="fa fa-plus"
-                                                 action="#{requisitoBean.novoRegistro()}" 
-                                                 update="@form" process="@this" 
-                                                 oncomplete="PF('dlgRequisito').show()"/>
+                                                  action="#{requisitoBean.novoRegistro()}" 
+                                                  update="@form" process="@this" 
+                                                  oncomplete="PF('dlgRequisito').show()"/>
 
                             </f:facet>
                             <f:facet name="right">
-                                <h:commandLink>
+                                <h:commandLink  immediate="true" >
                                     <p:graphicImage value="img/excel-icon.png" width="24" />
-                                    <p:dataExporter type="xls" target="frmcliente:tblClientes"
-                                                    fileName="clientes" />
+
+                                    <p:dataExporter type="xls" target="formRequisito:requisitoTblID"
+                                                    fileName="requisitos" encoding="UTF-8"  
+                                                    preProcessor="#{requisitoBean.customizationOptions()}" />
+
                                 </h:commandLink>
 
-                                <h:commandLink>
+                                <h:commandLink  immediate="true">
                                     <p:graphicImage value="img/pdf-icon.png" width="24" />
-                                    <p:dataExporter type="pdf" target="formRequisito:tblRequisito"
-                                                    fileName="clientes" />
+                                    <p:dataExporter type="pdf" target="formRequisito:requisitoTblID"
+                                                    fileName="requisitos"  
+                                                    />
                                 </h:commandLink>
                             </f:facet>
                         </p:toolbar>

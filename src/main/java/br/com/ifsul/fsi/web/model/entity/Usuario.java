@@ -84,10 +84,22 @@ public class Usuario implements Serializable {
     }
 
     public String getAtivoImg() {
+        if (this.ativo == null) {
+            return "img/gray.png";
+        }
+
         if (this.ativo.equals(Usuario.USUARIO_ATIVO)) {
-            return "img/sem-risco.png";
+            return "img/green.png";
         } else {
-            return "img/alto-risco.png";
+            return "img/gray.png";
+        }
+    }
+
+    public String getTipoImg() {
+        if (this.tipo.equals(Usuario.USUARIO_TIPO_ANALISTA)) {
+            return "img/user.png";
+        } else {
+            return "img/cliente.png";
         }
     }
 

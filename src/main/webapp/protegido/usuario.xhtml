@@ -24,13 +24,13 @@
                     <p:tab title="Geral">
                         <h:panelGrid columns="2" cellpadding="4" id="gridUsuario">
                             <h:outputText value="Username: " />
-                            <p:inputText value="#{usuarioBean.usuarioAtual.username}" />
+                            <p:inputText value="#{usuarioBean.usuarioAtual.username}" autocomplete="false"  />
 
                             <h:outputText value="Senha: " />
-                            <p:inputText value="#{usuarioBean.usuarioAtual.senha}" />
+                            <p:password value="#{usuarioBean.usuarioAtual.senha}"  autocomplete="false" feedback="true"/>
 
                             <h:outputText value="Nome: " />
-                            <p:inputText value="#{usuarioBean.usuarioAtual.nome}" 
+                            <p:inputText value="#{usuarioBean.usuarioAtual.nome}" size="30"
                                          required="true" 
                                          requiredMessage="Nome é obrigatório"/>
 
@@ -54,7 +54,7 @@
                 <f:facet name="footer">
                     <div style="float:right">
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Confirmar" update="@form" 
+                            <p:commandButton value="Confirmar" update="@form :formUsuario:usuarioTblID" 
                                              action="#{usuarioBean.salvarUsuario}" onsuccess="PF('dlgUsuario').hide()" />
 
                             <p:commandButton value="Cancelar" 
@@ -83,7 +83,7 @@
                              sortOrder="ascending" sortBy="#{item.username}" style="font-size: 12px" >
 
                     <p:column headerText="Ativo" style="width: 5%" filterBy="#{item.ativo}" filterStyle="font-size:9px">
-                        <p:graphicImage value="#{item.ativo}" height="24" width="24" />
+                        <p:graphicImage url="#{item.ativoImg}" height="24" width="24" />
                         <f:facet name="filter" >
                             <p:selectOneMenu onchange="PF('usuarioTbl').filter()"
                                              style="width:auto">
@@ -95,21 +95,21 @@
                         </f:facet>
                     </p:column>
 
-                    <p:column headerText="Username" sortBy="#{item.username}"  style="width: 5%" priority="5">
+                    <p:column headerText="Username" sortBy="#{item.username}"  filterBy="#{item.username}"  style="width: 15%" priority="5">
                         <h:outputText value="#{item.username}"/>
                     </p:column>
 
-                    <p:column headerText="Nome" sortBy="#{item.nome}" style="width:10%">
+                    <p:column headerText="Nome" sortBy="#{item.nome}"  filterBy="#{item.nome}" style="width:20%">
                         <h:outputText value="#{item.nome}"/>
 
                     </p:column>
 
-                    <p:column headerText="Tipo" sortBy="#{item.tipo}" style="width: 25%"
+                    <p:column headerText="Tipo" sortBy="#{item.tipo}" style="width: 5%"
                               filterBy="#{item.tipo}" >
-                        <h:outputText value="#{item.tipo}"/>
+                        <p:graphicImage value="#{item.tipoImg}" height="24" width="24" />
                     </p:column>
 
-                    <p:column style="width:32px;text-align: center">
+                    <p:column style="width:32px;text-align: center" exportable="false">
                         <p:commandButton update=":formUsuario:tbvUsuario" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgUsuario').show()">
                             <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.usuarioAtual}" />
                         </p:commandButton>
@@ -126,16 +126,19 @@
 
                             </f:facet>
                             <f:facet name="right">
-                                <h:commandLink>
+                                <h:commandLink  immediate="true" >
                                     <p:graphicImage value="img/excel-icon.png" width="24" />
-                                    <p:dataExporter type="xls" target="frmcliente:tblClientes"
-                                                    fileName="clientes" />
+
+                                    <p:dataExporter type="xls" target="formUsuario:usuarioTblID"
+                                                    fileName="usuarios" encoding="UTF-8"                                                     />
+
                                 </h:commandLink>
 
-                                <h:commandLink>
+                                <h:commandLink  immediate="true">
                                     <p:graphicImage value="img/pdf-icon.png" width="24" />
-                                    <p:dataExporter type="pdf" target="formUsuario:tblUsuario"
-                                                    fileName="clientes" />
+                                    <p:dataExporter type="pdf" target="formUsuario:usuarioTblID"
+                                                    fileName="usuarios"  
+                                                    preProcessor="#{usuarioBean.customizationOptions()}"/>
                                 </h:commandLink>
                             </f:facet>
                         </p:toolbar>
