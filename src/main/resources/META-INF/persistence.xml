@@ -8,7 +8,7 @@
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1/projeto_jpa"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.password" value="175artur"/>
-      <property name="javax.persistence.schema-generation.database.action" value="update"/>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
       <property name="jdbc.persistence.logging" value="true"/>
       <property name="jdbc.persistence.logfile" value="JDBC.log"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

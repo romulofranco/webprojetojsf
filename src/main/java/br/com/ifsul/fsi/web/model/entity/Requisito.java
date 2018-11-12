@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.json.JSONObject;
 
 /**
  *
@@ -43,7 +44,32 @@ public class Requisito implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataRequisito;
 
+    private Double anger;
+    private Double disgust;
+    private Double fear;
+    private Double joy;
+    private Double sadness;
+    
+    private String tone1;
+    private Double tone1Value;
+    
+    private String tone2;
+    private Double tone2Value;
+
     public Requisito() {
+    }
+
+    public Requisito(String usuario, String nlu, String toneAnalyzer, String descricao, String logChat, String tone1, Double tone1Value, String tone2, Double tone2Value) {
+        JSONObject json = new JSONObject(nlu);
+        JSONObject doc = json.getJSONObject("emotion");
+        this.anger = (double) doc.get("anger");
+        this.disgust = (double) doc.get("disgust");
+        this.fear = (double) doc.get("fear");
+        this.joy = (double) doc.get("joy");
+        this.sadness = (double) doc.get("sadness");
+        this.descricao = descricao;
+        this.logChat = logChat;
+        this.usuario = usuario;
     }
 
     public Integer getId() {
@@ -86,7 +112,7 @@ public class Requisito implements Serializable {
         if (this.potencialRisco == null) {
             return "img/sem-risco.png";
         }
-        
+
         if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_MEDIO)) {
             return "img/medio-risco.png";
         } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_ALTO)) {
@@ -126,17 +152,58 @@ public class Requisito implements Serializable {
         this.obs = obs;
     }
 
-    @Override
-    public String toString() {
-        return "Requisito{" + "id=" + id + ", usuario=" + usuario + ", descricao=" + descricao + ", logChat=" + logChat + ", potencialRisco=" + potencialRisco + ", nlu=" + nlu + ", toneAnalyzer=" + toneAnalyzer + ", obs=" + obs + ", data=" + dataRequisito + '}';
-    }
-
     public Date getDataRequisito() {
         return dataRequisito;
     }
 
     public void setDataRequisito(Date data) {
         this.dataRequisito = data;
+    }
+
+    public Double getAnger() {
+        return anger;
+    }
+
+    public void setAnger(Double anger) {
+        this.anger = anger;
+    }
+
+    
+    public Double getFear() {
+        return fear;
+    }
+
+    public void setFear(Double fear) {
+        this.fear = fear;
+    }
+
+    public Double getJoy() {
+        return joy;
+    }
+
+    public void setJoy(Double joy) {
+        this.joy = joy;
+    }
+
+    public Double getSadness() {
+        return sadness;
+    }
+
+    public void setSadness(Double sadness) {
+        this.sadness = sadness;
+    }
+
+    @Override
+    public String toString() {
+        return "Requisito{" + "id=" + id + ", usuario=" + usuario + ", descricao=" + descricao + ", logChat=" + logChat + ", potencialRisco=" + potencialRisco + ", nlu=" + nlu + ", toneAnalyzer=" + toneAnalyzer + ", obs=" + obs + ", dataRequisito=" + dataRequisito + ", anger=" + anger + ", disgust=" + disgust + ", fear=" + fear + ", joy=" + joy + ", sadness=" + sadness + '}';
+    }
+
+    public Double getDisgust() {
+        return disgust;
+    }
+
+    public void setDisgust(Double disgust) {
+        this.disgust = disgust;
     }
 
 }

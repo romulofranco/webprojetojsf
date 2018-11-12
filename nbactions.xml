@@ -16,4 +16,25 @@
                 <goal>jetty:run</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-tomcat</actionName>
+            <displayName>tomcat</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>tomcat:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-debug</actionName>
+            <displayName>debug</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>jetty:run</goal>
+            </goals>
+            <properties>
+                <jpda.listen>maven</jpda.listen>
+            </properties>
+        </action>
     </actions>
