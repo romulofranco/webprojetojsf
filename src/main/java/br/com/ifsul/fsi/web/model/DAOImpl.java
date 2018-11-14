@@ -9,8 +9,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-
-
 public abstract class DAOImpl<T, I extends Serializable> implements DAO<T, I> {
 
     private final static Logger logger = Logger.getLogger(DAOImpl.class);
@@ -18,21 +16,13 @@ public abstract class DAOImpl<T, I extends Serializable> implements DAO<T, I> {
     private DAOConexao conexao;
 
     @Override
-    public T save(T entity) {
-        try {
-            T saved = null;
-
-            this.getEntityManager().getTransaction().begin();
-            saved = this.getEntityManager().merge(entity);
-            this.getEntityManager().flush();
-            this.getEntityManager().getTransaction().commit();
-
-            return saved;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.conexao.getEntityManager().getTransaction().rollback();
-            return null;
-        }
+    public T save(T entity) throws Exception  {
+        T saved = null;
+        this.getEntityManager().getTransaction().begin();
+        saved = this.getEntityManager().merge(entity);
+        this.getEntityManager().flush();
+        this.getEntityManager().getTransaction().commit();
+        return saved;
     }
 
     public void insert(T entity) {
@@ -47,11 +37,26 @@ public abstract class DAOImpl<T, I extends Serializable> implements DAO<T, I> {
         }
     }
 
-    public void delete(Class<T> classe, Long id) {
+    public void delete(Class<T> classe, Integer id) {
         try {
             EntityManager em = this.getEntityManager();
             em.getTransaction().begin();
             Query query = em.createQuery("delete from " + classe.getSimpleName() + " o where o.id = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
+            em.flush();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.conexao.getEntityManager().getTransaction().rollback();
+        }
+    }
+
+    public void delete(Class<T> classe, String id) {
+        try {
+            EntityManager em = this.getEntityManager();
+            em.getTransaction().begin();
+            Query query = em.createQuery("delete from " + classe.getSimpleName() + " o where o.username = :id");
             query.setParameter("id", id);
             query.executeUpdate();
             em.flush();

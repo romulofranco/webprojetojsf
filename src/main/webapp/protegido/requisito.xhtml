@@ -54,9 +54,18 @@
                     </p:tab>
                 </p:tabView>
                 <f:facet name="footer">
+                    <div style="float:left">
+                        <h:panelGrid columns="1">
+                            <p:commandButton update="@form :formRequisito:requisitoTblID" icon="fa fa-trash-o" 
+                                             action="#{requisitoBean.deletarRequisito}" process="@this"
+                                             rendered="#{requisitoBean.requisitoAtual.id ne null}"
+                                             onsuccess="PF('dlgRequisito').hide()" />
+
+                        </h:panelGrid>
+                    </div>
                     <div style="float:right">
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Confirmar" update="@form" 
+                            <p:commandButton value="Confirmar" update="@form :formRequisito:requisitoTblID" 
                                              action="#{requisitoBean.salvarRequisito}" onsuccess="PF('dlgRequisito').hide()" />
 
                             <p:commandButton value="Cancelar" 
@@ -86,6 +95,7 @@
 
                     <p:column headerText="Potencial" style="width: 5%" filterBy="#{item.potencialRisco}" filterStyle="font-size:9px">
                         <p:graphicImage value="#{item.potencialRiscoImg}" height="24" width="24" />
+                        <h:outputText value="#{item.potencialRiscoDesc}" style="color: white" />
                         <f:facet name="filter" >
                             <p:selectOneMenu onchange="PF('requisitoTbl').filter()"
                                              style="width:auto">
@@ -118,8 +128,8 @@
                         <h:outputText value="#{item.usuario}"/>
                     </p:column>
 
-                    <p:column style="width:32px;text-align: center">
-                        <p:commandButton update=":formRequisito:tbvRequisito" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgRequisito').show()">
+                    <p:column style="width:32px;text-align: center" exportable="false">
+                        <p:commandButton update=":formRequisito:dlgRequisitoID" process="@this"  icon="fa fa-edit" title="View" oncomplete="PF('dlgRequisito').show()">
                             <f:setPropertyActionListener value="#{item}" target="#{requisitoBean.requisitoAtual}" />
                         </p:commandButton>
                     </p:column>
@@ -129,22 +139,22 @@
                             <f:facet name="left">
 
                                 <p:commandButton  icon="fa fa-plus"
-                                                 action="#{requisitoBean.novoRegistro()}" 
-                                                 update="@form" process="@this" 
-                                                 oncomplete="PF('dlgRequisito').show()"/>
+                                                  action="#{requisitoBean.novoRegistro()}" 
+                                                  update="@form" process="@this" 
+                                                  oncomplete="PF('dlgRequisito').show()"/>
 
                             </f:facet>
                             <f:facet name="right">
-                                <h:commandLink>
+                                <h:commandLink immediate="true">
                                     <p:graphicImage value="img/excel-icon.png" width="24" />
-                                    <p:dataExporter type="xls" target="frmcliente:tblClientes"
-                                                    fileName="clientes" />
+                                    <p:dataExporter type="xml" target="formRequisito:requisitoTblID"
+                                                    fileName="requisitos" />
                                 </h:commandLink>
 
-                                <h:commandLink>
+                                <h:commandLink immediate="true">
                                     <p:graphicImage value="img/pdf-icon.png" width="24" />
-                                    <p:dataExporter type="pdf" target="formRequisito:tblRequisito"
-                                                    fileName="clientes" />
+                                    <p:dataExporter type="pdf" target="formRequisito:requisitoTblID"
+                                                    fileName="requisitos" />
                                 </h:commandLink>
                             </f:facet>
                         </p:toolbar>

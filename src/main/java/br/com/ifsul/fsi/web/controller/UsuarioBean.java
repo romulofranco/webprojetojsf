@@ -8,9 +8,8 @@ package br.com.ifsul.fsi.web.controller;
 import br.com.ifsul.fsi.web.model.entity.Usuario;
 import br.com.ifsul.fsi.web.model.dao.UsuarioDAO;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +29,12 @@ public class UsuarioBean implements Serializable {
     private Usuario usuarioAtual;
     private List<Usuario> usuarioList;
     private List<Usuario> usuarioListFilter;
+    
+    private final String redirect = "/protegido/usuario.xhtml?faces-redirect=true";
+
+    public String menuAction() {
+        return redirect;
+    }
 
     @PostConstruct
     public void init() {
@@ -42,10 +47,14 @@ public class UsuarioBean implements Serializable {
     }
 
     public void salvarUsuario() {
-        this.printUsuario();
-        usuarioAtual = UsuarioDAO.getInstance().save(usuarioAtual);
-        usuarioList = UsuarioDAO.getInstance().getAll(Usuario.class);
-        usuarioAtual = new Usuario();
+        try {
+            this.printUsuario();
+            usuarioAtual = UsuarioDAO.getInstance().save(usuarioAtual);
+            usuarioList = UsuarioDAO.getInstance().getAll(Usuario.class);
+            usuarioAtual = new Usuario();
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

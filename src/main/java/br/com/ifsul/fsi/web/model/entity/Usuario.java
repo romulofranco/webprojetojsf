@@ -90,5 +90,13 @@ public class Usuario implements Serializable {
             return "img/alto-risco.png";
         }
     }
+    
+     public String getTipoImg() {
+        if (this.ativo.equals(Usuario.USUARIO_ATIVO)) {
+            return "img/sem-risco.png";
+        } else {
+            return "img/alto-risco.png";
+        }
+    }
 
 }

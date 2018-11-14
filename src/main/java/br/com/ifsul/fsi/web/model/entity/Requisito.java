@@ -97,6 +97,22 @@ public class Requisito implements Serializable {
 
         return "img/sem-risco.png";
     }
+    
+    public String getPotencialRiscoDesc() {
+        if (this.potencialRisco == null) {
+            return "";
+        }
+        
+        if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_MEDIO)) {
+            return "Risco médio";
+        } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_ALTO)) {
+            return "Alto risco";
+        } else if (this.potencialRisco.equals(REQ_POTENCIAL_RISCO_BAIXO)) {
+            return "Baixo risco";
+        }
+
+        return "Sem risco";
+    }
 
     public void setPotencialRisco(String potencialRisco) {
         this.potencialRisco = potencialRisco;

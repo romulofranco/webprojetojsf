@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 public interface DAO<T, I extends Serializable> {
 
-	public T save(T entity);
+	public T save(T entity) throws Exception;
 
 	public void remove(T entity);
 

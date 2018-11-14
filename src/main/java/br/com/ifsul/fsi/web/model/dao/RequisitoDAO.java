@@ -1,13 +1,12 @@
 package br.com.ifsul.fsi.web.model.dao;
 
 import br.com.ifsul.fsi.web.model.DAOImpl;
-import br.com.ifsul.fsi.web.model.DAOImpl;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
-public class RequisitoDAO extends DAOImpl<Requisito, Long> implements Serializable {
+public class RequisitoDAO extends DAOImpl<Requisito, Integer> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

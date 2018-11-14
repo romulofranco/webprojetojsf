@@ -8,10 +8,11 @@ package br.com.ifsul.fsi.web.controller;
 import br.com.ifsul.fsi.web.model.entity.Requisito;
 import br.com.ifsul.fsi.web.model.dao.RequisitoDAO;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -23,13 +24,19 @@ import org.apache.log4j.Logger;
  */
 @ManagedBean
 @SessionScoped
-public class RequisitoBean implements Serializable {
+public class RequisitoBean extends BaseBean implements Serializable {
 
     private final static Logger logger = Logger.getLogger(RequisitoBean.class);
 
     private Requisito requisitoAtual;
     private List<Requisito> requisitoList;
     private List<Requisito> requisitoListFilter;
+
+    private final String redirect = "/protegido/requisito.xhtml?faces-redirect=true";
+
+    public String menuAction() {
+        return redirect;
+    }
 
     @PostConstruct
     public void init() {
@@ -43,12 +50,24 @@ public class RequisitoBean implements Serializable {
 
     public void salvarRequisito() {
         this.printRequisito();
-        requisitoAtual = RequisitoDAO.getInstance().save(requisitoAtual);
-        requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
-        requisitoAtual = new Requisito();
-        
+        try {
+            requisitoAtual = RequisitoDAO.getInstance().save(requisitoAtual);
+            requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
+            requisitoAtual = new Requisito();
+            message("Salvar registro", "Requisito salvo com sucesso", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RequisitoBean.class.getName()).log(Level.SEVERE, null, ex);
+            message("Salvar registro", "Falha ao tentar salvar o registro", FacesMessage.SEVERITY_ERROR);
+        }
     }
-    
+
+    public void deletarRequisito() {
+        RequisitoDAO.getInstance().delete(Requisito.class, requisitoAtual.getId());
+        requisitoAtual = null;
+        requisitoList = RequisitoDAO.getInstance().getAll(Requisito.class);
+        message("Deletar registro", "Requisito excluído com sucesso", FacesMessage.SEVERITY_INFO);
+    }
+
     public void novoRegistro() {
         this.requisitoAtual = new Requisito();
         this.requisitoAtual.setDataRequisito(new Date(System.currentTimeMillis()));
