@@ -27,9 +27,13 @@ import java.util.List;
  */
 public class TelegramBot extends Thread {
 
+    private static final boolean CHATBOT_SERVICE = true;
+
     private final static Logger logger = Logger.getLogger(TelegramBot.class.getName());
 
-    private final String endpoint = "https://api.telegram.org/";
+    private final String endpointTelegram = "https://api.telegram.org/";
+    private final String endpointService = "http://localhost:2020/WebProjeto/service";
+
     private final String token;
     private boolean botListen = false;
 
@@ -45,12 +49,27 @@ public class TelegramBot extends Thread {
 
     public HttpResponse<JsonNode> sendMessage(Integer chatId, String text) throws UnirestException {
         logger.info("Enviando msg: " + chatId + " Msg: " + text);
-        return Unirest.post(endpoint + "bot" + token + "/sendMessage").field("chat_id", chatId).field("text", text)
+        return Unirest.post(endpointTelegram + "bot" + token + "/sendMessage").field("chat_id", chatId).field("text", text)
                 .asJson();
     }
 
+    public String insertRequisito(Requisito req) {
+        try {
+            logger.info("Inserindo requisito " + req.getJson());
+            HttpResponse<JsonNode> response = Unirest.post(endpointService + "/requisito/insert")
+                    .header("Content-Type", "application/json")
+                    .header("accept", "text/plain")
+                    .body(req.getJson())
+                    .asJson();
+
+            return response.getStatusText();
+        } catch (UnirestException e) {
+            return "Falha ao inserir requisito " + e.getMessage();
+        }
+    }
+
     public HttpResponse<JsonNode> getUpdates(Integer offset) throws UnirestException {
-        return Unirest.post(endpoint + "bot" + token + "/getUpdates").field("offset", offset).asJson();
+        return Unirest.post(endpointTelegram + "bot" + token + "/getUpdates").field("offset", offset).asJson();
     }
 
     @Override
@@ -94,10 +113,11 @@ public class TelegramBot extends Thread {
                                 WatsonHelper wh = new WatsonHelper();
                                 String textEnglish = wh.getTranslation(this.lastMessage, Language.PORTUGUESE, Language.ENGLISH);
                                 logger.info("Texto traduzido " + textEnglish);
-                                String result = wh.getNLUAnalysis(textEnglish);
+                                String nlu = wh.getNLUAnalysis(textEnglish);
+
                                 List<ToneScore> tones = wh.getToneAnalyzer(textEnglish);
-                                String tone1 = "", tone2 = "";
-                                Double tone1Val = new Double(0), tone2Val = new Double(0);
+                                String tone1 = "";
+                                Double tone1Val = new Double(0);
                                 if (tones.size() > 0) {
                                     if (tones.get(0) != null) {
                                         ToneScore tone = (ToneScore) tones.get(0);
@@ -106,16 +126,16 @@ public class TelegramBot extends Thread {
                                     }
                                 }
 
-                                if (tones.size() > 1) {
-                                    ToneScore tone = (ToneScore) tones.get(1);
-                                    tone2 = tone.getToneName();
-                                    tone2Val = tone.getScore();
+                                Requisito req = new Requisito("", nlu, tones.toString(), this.lastMessage, nlu, tone1, tone1Val);
+
+                                if (TelegramBot.CHATBOT_SERVICE) {
+                                    String responseStatus = this.insertRequisito(req);
+                                    logger.info("Response " + responseStatus);
+                                } else {
+                                    req = new Requisito("", nlu, tones.toString(), this.lastMessage, nlu, tone1, tone1Val);
+                                    RequisitoDAO.getInstance().insert(req);
                                 }
-
-                                Requisito req = new Requisito("", result, tones.toString(), this.lastMessage, result, tone1, tone1Val, tone2, tone2Val);
-                                RequisitoDAO.getInstance().insert(req);
-
-                                sendMessage(chatID, "Ultima msg analisada: " + this.lastMessage + "\n" + result);
+                                sendMessage(chatID, "Ultima msg analisada: " + this.lastMessage + "\n" + nlu + "\n Requisito enviado para a base");
 
                             } else if (texto.equalsIgnoreCase("/teste")) {
                                 sendMessage(chatID, "Parece que esse bot está funcionando...");

@@ -16,7 +16,7 @@ public class Chatbot {
     private Bot bot;
 
     public Chatbot() {
-        resourcesPath = getResourcesPath();
+        resourcesPath = getResourcesPath(true);
         MagicBooleans.trace_mode = TRACE_MODE;
         bot = new Bot("super", resourcesPath);
         chatSession = new Chat(bot);
@@ -52,7 +52,7 @@ public class Chatbot {
                     response = response.replace("&gt;", ">");
                 }
                 System.out.println("Robot : " + response);
-                
+
                 return response;
             }
         } catch (Exception e) {
@@ -65,7 +65,16 @@ public class Chatbot {
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
         path = path.substring(0, path.length() - 2);
+
         System.out.println(path);
+
         return path + File.separator + "src" + File.separator + "main" + File.separator + "resources";
+    }
+
+    private String getResourcesPath(boolean tomcat) {
+        String path = "c:\\work\\tmp";
+        System.out.println(path);
+
+        return path;
     }
 }
