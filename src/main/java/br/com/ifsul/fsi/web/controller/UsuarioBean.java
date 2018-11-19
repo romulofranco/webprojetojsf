@@ -5,12 +5,15 @@
  */
 package br.com.ifsul.fsi.web.controller;
 
+import br.com.ifsul.fsi.web.model.dao.RequisitoDAO;
 import br.com.ifsul.fsi.web.model.entity.Usuario;
 import br.com.ifsul.fsi.web.model.dao.UsuarioDAO;
+import br.com.ifsul.fsi.web.model.entity.Requisito;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -22,7 +25,7 @@ import org.apache.log4j.Logger;
  */
 @ManagedBean
 @SessionScoped
-public class UsuarioBean implements Serializable {
+public class UsuarioBean extends BaseBean implements Serializable {
 
     private final static Logger logger = Logger.getLogger(UsuarioBean.class);
 
@@ -54,8 +57,14 @@ public class UsuarioBean implements Serializable {
             usuarioAtual = new Usuario();
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
+    }
+    
+     public void deletarUsuario() {
+        UsuarioDAO.getInstance().delete(Usuario.class, usuarioAtual.getUsername());
+        usuarioAtual = null;
+        usuarioList = UsuarioDAO.getInstance().getAll(Usuario.class);
+        message("Deletar registro", "Usuário excluído com sucesso", FacesMessage.SEVERITY_INFO);
     }
     
     public void novoRegistro() {
