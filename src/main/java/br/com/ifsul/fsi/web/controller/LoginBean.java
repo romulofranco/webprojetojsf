@@ -3,6 +3,7 @@ package br.com.ifsul.fsi.web.controller;
 import br.com.ifsul.fsi.web.model.dao.UsuarioDAO;
 import br.com.ifsul.fsi.web.model.entity.Usuario;
 import java.io.Serializable;
+import java.sql.SQLException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,7 +14,7 @@ import org.apache.log4j.Logger;
 
 @ManagedBean
 @SessionScoped
-public class LoginBean implements Serializable {
+public class LoginBean extends BaseBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     final static Logger logger = Logger.getLogger(LoginBean.class);
@@ -28,7 +29,7 @@ public class LoginBean implements Serializable {
     public String login() {
         try {
             logger.info("Credenciais enviadas ao servidor " + this.username + " " + this.userPassword);
-            
+
             // lookup the user based on user name and user password
             this.usuarioAtual = buscarUsuario(this.username, this.userPassword);
 
@@ -64,6 +65,28 @@ public class LoginBean implements Serializable {
 
     }
 
+    public String getTemaUser() {
+        if (this.usuarioAtual == null) {
+            return "aristo";
+        } else {
+            if (this.usuarioAtual.getTema() == null) {
+                return "aristo";
+            } else {
+                return this.usuarioAtual.getTema();
+            }
+        }
+    }
+
+    public void saveUser() throws Exception {
+        try {
+            logger.info(usuarioAtual.toString());
+            UsuarioDAO.getInstance().save(usuarioAtual);
+            message("Salvando usuário", "Tema alterado com sucesso, efetuar logout  para aplicar a alteração", FacesMessage.SEVERITY_INFO);
+        } catch (SQLException ex) {
+            message("Salvando usuário", "Falha ao aplicar a alteração: " + ex.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+    }
+
     public String logout() {
         String identifier = this.username;
         this.usuarioAtual = null;
@@ -87,11 +110,11 @@ public class LoginBean implements Serializable {
 
     private Usuario buscarUsuario(String username, String password) {
         Usuario result = UsuarioDAO.getInstance().getById(Usuario.class, username);
-        
+
         if (result == null) {
             return null;
         }
-        
+
         if (result.getSenha().equals(password)) {
             return result;
         }

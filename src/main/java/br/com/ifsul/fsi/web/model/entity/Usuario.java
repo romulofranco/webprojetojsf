@@ -31,6 +31,7 @@ public class Usuario implements Serializable {
     private String chatId;
     private String tipo;
     private String ativo;
+    private String tema;
 
     public Usuario() {
     }
@@ -97,6 +98,20 @@ public class Usuario implements Serializable {
         } else {
             return "img/alto-risco.png";
         }
+    }
+
+    public String getTema() {
+        
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "username=" + username + ", nome=" + nome + ", senha=" + senha + ", chatId=" + chatId + ", tipo=" + tipo + ", ativo=" + ativo + ", tema=" + tema + '}';
     }
 
 }

@@ -22,10 +22,27 @@
                 </h:panelGrid>
 
                 <h:panelGrid columns="4" style="float:right;margin-top: 5px">
+                    <p:commandButton icon="fa fa-bolt" onclick="PF('dlgTemas').show()"/>
                     <p:commandButton icon="fa fa-bell" onclick="PF('sidebarNotif').show()"/>
                     <p:commandButton icon="fa fa-sign-in" action="#{loginBean.logout()}" process="@this" immediate="true"/>                  
                 </h:panelGrid>
             </div>
+
+            <p:dialog header="Tema" widgetVar="dlgTemas" visible="false" id="dlgTema">
+                <h:panelGrid columns="1">
+                    <p:outputLabel for="theme" value="Theme:" />
+                    <p:selectOneMenu id="theme" style="width:165px" effect="fade"
+                                     value="#{loginBean.usuarioAtual.tema}">
+                        <f:selectItems value="#{baseBean.themes}" />
+                        <p:ajax event="change" listener="#{loginBean.saveUser}" 
+                                update="@all" 
+                                process="@this" 
+                                immediate="true" 
+                                oncomplete="location.reload()" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+            </p:dialog>
 
             <p:sidebar widgetVar="sidebarMenu" baseZIndex="10000" styleClass="ui-widget ">
                 <h1 style="font-weight:normal">Menu</h1>
