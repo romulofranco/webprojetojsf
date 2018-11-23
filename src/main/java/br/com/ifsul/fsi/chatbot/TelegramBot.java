@@ -27,12 +27,12 @@ import java.util.List;
  */
 public class TelegramBot extends Thread {
 
-    private static final boolean CHATBOT_SERVICE = true;
+    private static final boolean CHATBOT_SERVICE = false;
 
     private final static Logger logger = Logger.getLogger(TelegramBot.class.getName());
 
     private final String endpointTelegram = "https://api.telegram.org/";
-    private final String endpointService = "http://localhost:2020/WebProjeto/service";
+    private final String endpointService = "http://localhost:8080/WebProjeto/service";
 
     private final String token;
     private boolean botListen = false;

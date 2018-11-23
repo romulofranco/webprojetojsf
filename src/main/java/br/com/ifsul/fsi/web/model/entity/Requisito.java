@@ -52,8 +52,8 @@ public class Requisito implements Serializable {
 
     private String tone1;
     private Double tone1Value;
-    
-      public String getJson() {
+
+    public String getJson() {
         JSONObject jsonObj = new JSONObject();
 
         jsonObj.put("usuario", this.usuario);
@@ -68,7 +68,7 @@ public class Requisito implements Serializable {
         jsonObj.put("tone1", this.tone1);
         jsonObj.put("tone1Value", this.tone1Value);
         jsonObj.put("obs", this.obs);
-        return  jsonObj.toString();
+        return jsonObj.toString();
     }
 
     public Requisito() {
@@ -280,5 +280,4 @@ public class Requisito implements Serializable {
         this.tone1Value = tone1Value;
     }
 
-  
 }
