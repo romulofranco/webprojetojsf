@@ -27,6 +27,12 @@
 
     <repositories>
         <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
             <snapshots />
             <id>snapshots</id>
             <name>libs-snapshot</name>
@@ -78,8 +84,16 @@
             <artifactId>primefaces</artifactId>
             <version>${primefaces.version}</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.primefaces.extensions/all-themes -->
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>1.0.8</version>
+            <type>pom</type>
+        </dependency>
 
-
+      
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
